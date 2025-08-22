@@ -306,47 +306,49 @@ include '../includes/student-header.php';
 ?>
 
 <!-- Quiz Header -->
-<div class="mb-8">
-    <div class="rounded-xl p-6 text-white" style="background: linear-gradient(135deg, #5fb3b4 0%, #2d3748 100%);">
-        <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+<div class="mb-6 sm:mb-8">
+    <div class="rounded-xl p-4 sm:p-6 text-white" style="background: linear-gradient(135deg, #5fb3b4 0%, #2d3748 100%);">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between">
             <div class="flex-1">
                 <div class="flex items-center mb-4">
                     <a href="module-view.php?id=<?php echo $module_id; ?>&course_id=<?php echo $course_id; ?>" 
-                       class="text-white hover:text-yellow-300 transition duration-300 mr-4">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       class="text-white hover:text-yellow-300 transition duration-300 mr-3 sm:mr-4">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </a>
-                    <span class="text-white opacity-75"><?php echo htmlspecialchars($quiz['course_title']); ?></span>
-                    <span class="text-white opacity-50 mx-2">•</span>
-                    <span class="text-white opacity-75"><?php echo htmlspecialchars($quiz['module_title']); ?></span>
-                    <span class="text-white opacity-50 mx-2">•</span>
-                    <span class="text-white opacity-75">Quiz</span>
+                    <div class="flex flex-wrap items-center text-xs sm:text-sm">
+                        <span class="text-white opacity-75"><?php echo htmlspecialchars($quiz['course_title']); ?></span>
+                        <span class="text-white opacity-50 mx-1 sm:mx-2 hidden sm:inline">•</span>
+                        <span class="text-white opacity-75 block sm:inline"><?php echo htmlspecialchars($quiz['module_title']); ?></span>
+                        <span class="text-white opacity-50 mx-1 sm:mx-2 hidden sm:inline">•</span>
+                        <span class="text-white opacity-75 block sm:inline">Quiz</span>
+                    </div>
                 </div>
-                <h1 class="text-2xl md:text-3xl font-bold mb-3 text-white">
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 text-white">
                     <?php echo htmlspecialchars($quiz['title']); ?>
                 </h1>
-                <div class="flex flex-wrap gap-4 text-sm">
-                    <div class="bg-white bg-opacity-20 rounded-lg px-3 py-1">
+                <div class="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm">
+                    <div class="bg-white bg-opacity-20 rounded-lg px-2 sm:px-3 py-1">
                         <span class="text-white"><?php echo $total_questions; ?> Questions</span>
                     </div>
-                    <div class="bg-white bg-opacity-20 rounded-lg px-3 py-1">
+                    <div class="bg-white bg-opacity-20 rounded-lg px-2 sm:px-3 py-1">
                         <span class="text-white">Pass: <?php echo $quiz['pass_threshold']; ?>%</span>
                     </div>
                     <?php if ($quiz['quiz_type'] == 'final'): ?>
-                        <div class="bg-yellow-500 bg-opacity-80 rounded-lg px-3 py-1">
+                        <div class="bg-yellow-500 bg-opacity-80 rounded-lg px-2 sm:px-3 py-1">
                             <span class="text-white">Final Quiz</span>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
             <?php if ($active_attempt && !$is_review): ?>
-                <div class="mt-6 md:mt-0 md:ml-8">
-                    <div class="bg-white bg-opacity-20 rounded-xl p-6 text-center">
-                        <div class="text-3xl font-bold text-white mb-2">
+                <div class="mt-6 lg:mt-0 lg:ml-8">
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 sm:p-6 text-center">
+                        <div class="text-2xl sm:text-3xl font-bold text-white mb-2">
                             <?php echo $current_question; ?>/<?php echo $total_questions; ?>
                         </div>
-                        <div class="text-white opacity-90 text-sm mb-3">Question Progress</div>
+                        <div class="text-white opacity-90 text-xs sm:text-sm mb-3">Question Progress</div>
                         <div class="w-full bg-white bg-opacity-30 rounded-full h-2">
                             <div class="bg-yellow-400 h-2 rounded-full transition-all duration-500" 
                                  style="width: <?php echo round(($current_question / $total_questions) * 100); ?>%"></div>
@@ -363,26 +365,26 @@ include '../includes/student-header.php';
 
 <!-- Alert Messages -->
 <?php if ($success_message): ?>
-    <div class="mb-6">
-        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg">
-            <div class="flex items-center">
-                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="mb-4 sm:mb-6">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 sm:px-6 py-4 rounded-lg">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
                 </svg>
-                <div class="font-semibold"><?php echo htmlspecialchars($success_message); ?></div>
+                <div class="font-semibold text-sm sm:text-base"><?php echo htmlspecialchars($success_message); ?></div>
             </div>
         </div>
     </div>
 <?php endif; ?>
 
 <?php if ($error_message): ?>
-    <div class="mb-6">
-        <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
-            <div class="flex items-center">
-                <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+    <div class="mb-4 sm:mb-6">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 sm:px-6 py-4 rounded-lg">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 mr-3 flex-shrink-0 mt-0.5 sm:mt-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                 </svg>
-                <div class="font-semibold"><?php echo htmlspecialchars($error_message); ?></div>
+                <div class="font-semibold text-sm sm:text-base"><?php echo htmlspecialchars($error_message); ?></div>
             </div>
         </div>
     </div>
@@ -393,71 +395,71 @@ include '../includes/student-header.php';
     <!-- Quiz Start Screen -->
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="p-8 text-center">
-                <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="p-6 sm:p-8 text-center">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 sm:w-10 sm:h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
                 
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Take the Quiz?</h2>
-                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Ready to Take the Quiz?</h2>
+                <p class="text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base">
                     This quiz contains <?php echo $total_questions; ?> questions. You need to score at least <?php echo $quiz['pass_threshold']; ?>% to pass. 
                     Take your time and read each question carefully.
                 </p>
                 
                 <!-- Quiz Instructions -->
-                <div class="bg-blue-50 rounded-lg p-6 mb-8 text-left max-w-2xl mx-auto">
-                    <h3 class="font-semibold text-blue-900 mb-3">Quiz Instructions:</h3>
-                    <ul class="space-y-2 text-blue-800">
+                <div class="bg-blue-50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 text-left max-w-2xl mx-auto">
+                    <h3 class="font-semibold text-blue-900 mb-3 text-sm sm:text-base">Quiz Instructions:</h3>
+                    <ul class="space-y-2 text-blue-800 text-sm">
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            Questions are presented one at a time
+                            <span>Questions are presented one at a time</span>
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            You can navigate back and forth between questions
+                            <span>You can navigate back and forth between questions</span>
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            You can change your answers before final submission
+                            <span>You can change your answers before final submission</span>
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            Review your answers before final submission
+                            <span>Review your answers before final submission</span>
                         </li>
                         <li class="flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            Minimum passing score: <?php echo $quiz['pass_threshold']; ?>%
+                            <span>Minimum passing score: <?php echo $quiz['pass_threshold']; ?>%</span>
                         </li>
                     </ul>
                 </div>
                 
                 <!-- Previous Attempts -->
                 <?php if (!empty($previous_attempts)): ?>
-                    <div class="bg-gray-50 rounded-lg p-6 mb-8 text-left max-w-2xl mx-auto">
-                        <h3 class="font-semibold text-gray-900 mb-3">Previous Attempts:</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 text-left max-w-2xl mx-auto">
+                        <h3 class="font-semibold text-gray-900 mb-3 text-sm sm:text-base">Previous Attempts:</h3>
                         <div class="space-y-2">
                             <?php foreach ($previous_attempts as $attempt): ?>
-                                <div class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 border-b border-gray-200 last:border-b-0 gap-2 sm:gap-0">
                                     <div>
-                                        <span class="text-sm text-gray-600">
+                                        <span class="text-xs sm:text-sm text-gray-600">
                                             Attempt <?php echo $attempt['attempt_number']; ?> - 
                                             <?php echo date('M j, Y g:i A', strtotime($attempt['completed_at'])); ?>
                                         </span>
                                     </div>
                                     <div class="flex items-center">
-                                        <span class="text-lg font-medium mr-2
+                                        <span class="text-base sm:text-lg font-medium mr-2
                                             <?php echo $attempt['passed'] ? 'text-green-600' : 'text-red-600'; ?>">
                                             <?php echo $attempt['score']; ?>%
                                         </span>
@@ -475,7 +477,7 @@ include '../includes/student-header.php';
                 <!-- Start Quiz Button -->
                 <form method="POST">
                     <button type="submit" name="start_quiz" 
-                            class="bg-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-purple-700 transition duration-300">
+                            class="w-full sm:w-auto bg-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-purple-700 transition duration-300">
                         Start Quiz
                     </button>
                 </form>
@@ -487,14 +489,14 @@ include '../includes/student-header.php';
     <!-- Quiz Review Screen -->
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <h2 class="text-xl font-semibold text-gray-900">Review Your Answers</h2>
-                <p class="text-gray-600 mt-2">Please review your answers before submitting the quiz.</p>
+            <div class="p-4 sm:p-6 border-b border-gray-100">
+                <h2 class="text-lg sm:text-xl font-semibold text-gray-900">Review Your Answers</h2>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base">Please review your answers before submitting the quiz.</p>
             </div>
             
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <!-- Question Summary -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 mb-6 sm:mb-8">
                     <?php 
                     // Get all user answers for this attempt
                     $stmt = $pdo->prepare("
@@ -513,15 +515,15 @@ include '../includes/student-header.php';
                         $is_answered = in_array($question_id, $answered_questions);
                     ?>
                         <a href="quiz.php?id=<?php echo $quiz_id; ?>&module_id=<?php echo $module_id; ?>&course_id=<?php echo $course_id; ?>&q=<?php echo $i; ?>" 
-                           class="flex items-center justify-center p-3 rounded-lg border-2 transition duration-300
+                           class="flex items-center justify-center p-2 sm:p-3 rounded-lg border-2 transition duration-300 text-sm sm:text-base
                                <?php echo $is_answered ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700'; ?>">
                             <span class="font-medium">Q<?php echo $i; ?></span>
                             <?php if ($is_answered): ?>
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
                             <?php else: ?>
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                 </svg>
                             <?php endif; ?>
@@ -530,43 +532,42 @@ include '../includes/student-header.php';
                 </div>
                 
                 <!-- Progress Stats -->
-                <div class="bg-blue-50 rounded-lg p-6 mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-blue-50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                         <div>
-                            <div class="text-2xl font-bold text-blue-600"><?php echo count($user_answers); ?></div>
-                            <div class="text-sm text-blue-800">Questions Answered</div>
+                            <div class="text-xl sm:text-2xl font-bold text-blue-600"><?php echo count($user_answers); ?></div>
+                            <div class="text-xs sm:text-sm text-blue-800">Questions Answered</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-blue-600"><?php echo $total_questions - count($user_answers); ?></div>
-                            <div class="text-sm text-blue-800">Questions Remaining</div>
+                            <div class="text-xl sm:text-2xl font-bold text-blue-600"><?php echo $total_questions - count($user_answers); ?></div>
+                            <div class="text-xs sm:text-sm text-blue-800">Questions Remaining</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-blue-600"><?php echo round((count($user_answers) / $total_questions) * 100); ?>%</div>
-                            <div class="text-sm text-blue-800">Completion</div>
+                            <div class="text-xl sm:text-2xl font-bold text-blue-600"><?php echo round((count($user_answers) / $total_questions) * 100); ?>%</div>
+                            <div class="text-xs sm:text-sm text-blue-800">Completion</div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Action Buttons -->
-                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                     <?php if (count($user_answers) < $total_questions): ?>
                         <a href="quiz.php?id=<?php echo $quiz_id; ?>&module_id=<?php echo $module_id; ?>&course_id=<?php echo $course_id; ?>&q=1" 
-                           class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 text-center">
+                           class="w-full sm:w-auto px-4 sm:px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 text-center text-sm sm:text-base font-medium">
                             Continue Answering Questions
                         </a>
                     <?php endif; ?>
                     
                     <?php if (count($user_answers) == $total_questions): ?>
-                        <form method="POST" class="inline">
-                            <button type="submit" name="submit_quiz" 
-                                    class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 font-semibold"
-                                    onclick="return confirm('Are you sure you want to submit your quiz? You cannot change your answers after submission.')">
+                        <form method="POST" class="w-full sm:w-auto" id="quiz-submit-form">
+                            <button type="button" id="submit-quiz-btn"
+                                    class="w-full sm:w-auto px-6 sm:px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 font-semibold text-sm sm:text-base">
                                 Submit Quiz
                             </button>
                         </form>
                     <?php else: ?>
                         <div class="text-center">
-                            <p class="text-red-600 font-medium">Please answer all questions before submitting the quiz.</p>
+                            <p class="text-red-600 font-medium text-sm sm:text-base">Please answer all questions before submitting the quiz.</p>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -579,39 +580,39 @@ include '../includes/student-header.php';
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <!-- Question Header -->
-            <div class="p-6 border-b border-gray-100">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center">
-                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium mr-3">
+            <div class="p-4 sm:p-6 border-b border-gray-100">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3 sm:gap-0">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                        <span class="bg-purple-100 text-purple-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium">
                             Question <?php echo $current_question; ?> of <?php echo $total_questions; ?>
                         </span>
-                        <span class="text-gray-600 text-sm">
+                        <span class="text-gray-600 text-xs sm:text-sm">
                             <?php echo $question['points']; ?> point<?php echo $question['points'] != 1 ? 's' : ''; ?>
                         </span>
                     </div>
-                    <div class="text-sm text-gray-500">
+                    <div class="text-xs sm:text-sm text-gray-500">
                         <?php echo ucfirst(str_replace('_', ' ', $question['question_type'])); ?>
                     </div>
                 </div>
                 
-                <h3 class="text-xl font-semibold text-gray-900">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
                     <?php echo htmlspecialchars($question['question_text']); ?>
                 </h3>
             </div>
             
             <!-- Question Content -->
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <form method="POST">
                     <?php if ($question['question_type'] == 'multiple_choice' || $question['question_type'] == 'true_false'): ?>
-                        <div class="space-y-4">
+                        <div class="space-y-3 sm:space-y-4">
                             <?php foreach ($question_options as $option): ?>
-                                <label class="flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-purple-300 hover:bg-purple-50 transition duration-300">
+                                <label class="flex items-start p-3 sm:p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-purple-300 hover:bg-purple-50 transition duration-300">
                                     <input type="radio" 
                                            name="selected_option" 
                                            value="<?php echo $option['id']; ?>"
                                            class="mt-1 text-purple-600 focus:ring-purple-500"
                                            <?php echo ($current_answer && $current_answer['selected_option_id'] == $option['id']) ? 'checked' : ''; ?>>
-                                    <span class="ml-3 text-gray-900 flex-1">
+                                    <span class="ml-3 text-gray-900 flex-1 text-sm sm:text-base">
                                         <?php echo htmlspecialchars($option['option_text']); ?>
                                     </span>
                                 </label>
@@ -626,17 +627,17 @@ include '../includes/student-header.php';
                             <textarea id="answer_text" 
                                       name="answer_text" 
                                       rows="4" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm sm:text-base"
                                       placeholder="Enter your answer here..."><?php echo $current_answer ? htmlspecialchars($current_answer['answer_text']) : ''; ?></textarea>
                         </div>
                     <?php endif; ?>
                     
                     <!-- Navigation Buttons -->
-                    <div class="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
-                        <div class="flex items-center gap-3">
+                    <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center mt-6 sm:mt-8 gap-4">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                             <?php if ($current_question > 1): ?>
                                 <button type="submit" name="previous_question" 
-                                        class="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300">
+                                        class="flex items-center justify-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 text-sm font-medium">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                                     </svg>
@@ -645,7 +646,7 @@ include '../includes/student-header.php';
                             <?php endif; ?>
                             
                             <a href="quiz.php?id=<?php echo $quiz_id; ?>&module_id=<?php echo $module_id; ?>&course_id=<?php echo $course_id; ?>&review=1" 
-                               class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-300">
+                               class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-300 text-sm font-medium">
                                 Review Answers
                             </a>
                         </div>
@@ -653,7 +654,7 @@ include '../includes/student-header.php';
                         <div class="flex items-center gap-3">
                             <?php if ($current_question < $total_questions): ?>
                                 <button type="submit" name="next_question" 
-                                        class="flex items-center px-6 py-3 text-white rounded-lg font-medium hover:bg-opacity-90 transition duration-300"
+                                        class="w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-3 text-white rounded-lg font-medium hover:bg-opacity-90 transition duration-300 text-sm"
                                         style="background-color: #5fb3b4;">
                                     Save & Next
                                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -662,7 +663,7 @@ include '../includes/student-header.php';
                                 </button>
                             <?php else: ?>
                                 <button type="submit" name="next_question" 
-                                        class="flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition duration-300">
+                                        class="w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition duration-300 text-sm">
                                     Save & Review
                                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -676,10 +677,10 @@ include '../includes/student-header.php';
         </div>
         
         <!-- Question Navigation Sidebar -->
-        <div class="mt-6">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h4 class="font-semibold text-gray-900 mb-4">Question Navigation</h4>
-                <div class="grid grid-cols-5 md:grid-cols-10 gap-2">
+        <div class="mt-4 sm:mt-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
+                <h4 class="font-semibold text-gray-900 mb-4 text-sm sm:text-base">Question Navigation</h4>
+                <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2">
                     <?php for ($i = 1; $i <= $total_questions; $i++): 
                         $q_id = $questions[$i-1]['id'];
                         $is_answered = false;
@@ -691,7 +692,7 @@ include '../includes/student-header.php';
                         }
                     ?>
                         <a href="quiz.php?id=<?php echo $quiz_id; ?>&module_id=<?php echo $module_id; ?>&course_id=<?php echo $course_id; ?>&q=<?php echo $i; ?>" 
-                           class="w-10 h-10 flex items-center justify-center text-sm font-medium rounded-lg transition duration-300
+                           class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-medium rounded-lg transition duration-300
                                <?php if ($i == $current_question): ?>
                                    bg-purple-600 text-white
                                <?php elseif ($is_answered): ?>
@@ -704,7 +705,7 @@ include '../includes/student-header.php';
                     <?php endfor; ?>
                 </div>
                 <div class="mt-4 text-xs text-gray-600">
-                    <div class="flex items-center gap-4">
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-4">
                         <div class="flex items-center">
                             <div class="w-3 h-3 bg-purple-600 rounded mr-2"></div>
                             <span>Current</span>
@@ -723,6 +724,33 @@ include '../includes/student-header.php';
         </div>
     </div>
 <?php endif; ?>
+
+<!-- Custom Confirmation Modal -->
+<div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-95" id="modal-content">
+        <div class="p-6">
+            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full">
+                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 text-center mb-2">Submit Quiz?</h3>
+            <p class="text-gray-600 text-center mb-6">
+                Are you sure you want to submit your quiz? You cannot change your answers after submission.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <button type="button" id="cancel-submit" 
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-300 font-medium">
+                    Cancel
+                </button>
+                <button type="button" id="confirm-submit" 
+                        class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 font-medium">
+                    Yes, Submit Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </main>
 </div>
@@ -863,15 +891,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission loading states
     const submitButtons = document.querySelectorAll('button[type="submit"]');
     submitButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            // For quiz submission, show confirmation
-            if (this.name === 'submit_quiz') {
-                if (!confirm('Are you sure you want to submit your quiz? You cannot change your answers after submission.')) {
-                    e.preventDefault();
-                    return false;
-                }
-            }
-            
+        button.addEventListener('click', function(e) {            
             // For answer submissions, check if an option is selected
             if (this.name === 'next_question' || this.name === 'previous_question') {
                 const form = this.closest('form');
@@ -886,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (textArea && textArea.value.trim()) hasAnswer = true;
                 
                 if (!hasAnswer && this.name === 'next_question') {
-                    alert('Please select an answer before continuing.');
+                    showAlert('Please select an answer before continuing.', 'error');
                     e.preventDefault();
                     return false;
                 }
@@ -917,6 +937,132 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Custom confirmation modal functionality
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const modalContent = document.getElementById('modal-content');
+    const submitQuizBtn = document.getElementById('submit-quiz-btn');
+    const cancelSubmitBtn = document.getElementById('cancel-submit');
+    const confirmSubmitBtn = document.getElementById('confirm-submit');
+    const quizSubmitForm = document.getElementById('quiz-submit-form');
+
+    // Show confirmation modal
+    if (submitQuizBtn) {
+        submitQuizBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showConfirmationModal();
+        });
+    }
+
+    // Cancel submission
+    if (cancelSubmitBtn) {
+        cancelSubmitBtn.addEventListener('click', function() {
+            hideConfirmationModal();
+        });
+    }
+
+    // Confirm submission
+    if (confirmSubmitBtn) {
+        confirmSubmitBtn.addEventListener('click', function() {
+            // Add hidden input to form to trigger submission
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'submit_quiz';
+            hiddenInput.value = '1';
+            quizSubmitForm.appendChild(hiddenInput);
+            
+            // Submit the form
+            quizSubmitForm.submit();
+        });
+    }
+
+    // Close modal when clicking outside
+    if (confirmationModal) {
+        confirmationModal.addEventListener('click', function(e) {
+            if (e.target === confirmationModal) {
+                hideConfirmationModal();
+            }
+        });
+    }
+
+    // Function to show confirmation modal
+    function showConfirmationModal() {
+        confirmationModal.classList.remove('hidden');
+        confirmationModal.classList.add('flex');
+        
+        // Animation
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }, 10);
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to hide confirmation modal
+    function hideConfirmationModal() {
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            confirmationModal.classList.remove('flex');
+            confirmationModal.classList.add('hidden');
+        }, 300);
+        
+        // Restore body scroll
+        document.body.style.overflow = 'auto';
+    }
+
+    // Function to show custom alerts
+    function showAlert(message, type = 'info') {
+        // Remove existing alerts
+        const existingAlerts = document.querySelectorAll('.custom-alert');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        // Create alert element
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `custom-alert fixed top-4 right-4 z-50 max-w-sm w-full transform transition-all duration-300 translate-x-full`;
+        
+        const bgColor = type === 'error' ? 'bg-red-100 border-red-400 text-red-700' : 
+                       type === 'success' ? 'bg-green-100 border-green-400 text-green-700' :
+                       'bg-blue-100 border-blue-400 text-blue-700';
+        
+        const icon = type === 'error' ? 
+            '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>' :
+            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>';
+        
+        alertDiv.innerHTML = `
+            <div class="${bgColor} border px-4 py-3 rounded-lg shadow-lg">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        ${icon}
+                    </svg>
+                    <div class="font-medium text-sm">${message}</div>
+                    <button type="button" class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 hover:bg-black hover:bg-opacity-10 transition duration-300" onclick="this.parentElement.parentElement.remove()">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Animate in
+        setTimeout(() => {
+            alertDiv.classList.remove('translate-x-full');
+            alertDiv.classList.add('translate-x-0');
+        }, 10);
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            alertDiv.classList.remove('translate-x-0');
+            alertDiv.classList.add('translate-x-full');
+            setTimeout(() => alertDiv.remove(), 300);
+        }, 5000);
+    }
+
     // Warning for page navigation during quiz
     const activeAttempt = <?php echo $active_attempt ? 'true' : 'false'; ?>;
     if (activeAttempt) {
@@ -943,7 +1089,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <?php endif; ?>
     });
 
-    // Add CSS for animations
+    // Add CSS for animations and mobile responsiveness
     const style = document.createElement('style');
     style.textContent = `
         .animate-spin {
@@ -959,6 +1105,180 @@ document.addEventListener('DOMContentLoaded', function() {
             transition-property: all;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 300ms;
+        }
+        
+        /* Mobile responsive improvements */
+        @media (max-width: 640px) {
+            .space-y-4 > * + * {
+                margin-top: 0.75rem;
+            }
+            
+            .space-y-3 > * + * {
+                margin-top: 0.75rem;
+            }
+            
+            /* Ensure buttons don't overflow on small screens */
+            button, a[class*="bg-"], a[class*="border"] {
+                word-wrap: break-word;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Better spacing for mobile */
+            .gap-4 {
+                gap: 0.75rem;
+            }
+            
+            .gap-3 {
+                gap: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small screens */
+            .text-xl {
+                font-size: 1.125rem;
+            }
+            
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+            
+            .px-6 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .px-8 {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        button, a, input[type="radio"] {
+            transition: all 0.3s ease;
+        }
+        
+        /* Focus states for accessibility */
+        button:focus, a:focus, input:focus {
+            outline: 2px solid #5fb3b4;
+            outline-offset: 2px;
+        }
+        
+        /* Touch-friendly hover states */
+        @media (hover: hover) {
+            .hover\\:bg-gray-50:hover {
+                background-color: #f9fafb;
+            }
+            
+            .hover\\:bg-gray-700:hover {
+                background-color: #374151;
+            }
+            
+            .hover\\:bg-purple-700:hover {
+                background-color: #6d28d9;
+            }
+            
+            .hover\\:bg-green-700:hover {
+                background-color: #047857;
+            }
+            
+            .hover\\:border-purple-300:hover {
+                border-color: #c4b5fd;
+            }
+        }
+        
+        /* Ensure text doesn't overflow on small screens */
+        .truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Better radio button styling for mobile */
+        input[type="radio"] {
+            min-width: 16px;
+            min-height: 16px;
+        }
+        
+        @media (max-width: 640px) {
+            input[type="radio"] {
+                min-width: 18px;
+                min-height: 18px;
+            }
+        }
+        
+        /* Question navigation grid improvements */
+        .grid {
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 640px) {
+            .grid {
+                gap: 0.375rem;
+            }
+        }
+        
+        /* Better line height for mobile reading */
+        @media (max-width: 640px) {
+            p, span, div {
+                line-height: 1.6;
+            }
+        }
+        
+        /* Custom modal styles */
+        .scale-95 {
+            transform: scale(0.95);
+        }
+        
+        .scale-100 {
+            transform: scale(1);
+        }
+        
+        /* Modal backdrop */
+        #confirmation-modal {
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Modal animation */
+        #modal-content {
+            animation-duration: 0.3s;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Custom alert positioning */
+        .custom-alert {
+            z-index: 9999;
+        }
+        
+        /* Ensure modal is above everything */
+        .z-50 {
+            z-index: 50;
+        }
+        
+        /* Modal responsive adjustments */
+        @media (max-width: 640px) {
+            #modal-content {
+                margin: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+        }
+        
+        /* Smooth transitions for modal elements */
+        #confirmation-modal button {
+            transition: all 0.2s ease;
+        }
+        
+        #confirmation-modal button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        #confirmation-modal button:active {
+            transform: translateY(0);
         }
     `;
     document.head.appendChild(style);
