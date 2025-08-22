@@ -37,7 +37,8 @@ try {
         SELECT DISTINCT c.id, c.title, c.description,
                COUNT(CASE WHEN up.status = 'completed' AND up.module_id IS NOT NULL THEN 1 END) as completed_modules,
                COUNT(CASE WHEN up.module_id IS NOT NULL THEN 1 END) as total_modules,
-               MAX(up.completed_at) as last_activity
+               MAX(up.completed_at) as last_activity,
+               CASE WHEN EXISTS(SELECT 1 FROM certificates cert WHERE cert.course_id = c.id AND cert.user_id = ?) THEN 1 ELSE 0 END as has_certificate
         FROM courses c
         LEFT JOIN modules m ON c.id = m.course_id AND m.is_active = 1
         LEFT JOIN user_progress up ON m.id = up.module_id AND up.user_id = ?
@@ -48,7 +49,7 @@ try {
         ORDER BY last_activity DESC
         LIMIT 3
     ");
-    $stmt->execute([$student_id, $student_id]);
+    $stmt->execute([$student_id, $student_id, $student_id]);
     $recent_courses = $stmt->fetchAll();
     
     // Get available courses not yet started
@@ -209,13 +210,24 @@ include '../includes/student-header.php';
                             <?php 
                             $progress_percentage = $course['total_modules'] > 0 ? 
                                 round(($course['completed_modules'] / $course['total_modules']) * 100) : 0;
+                            $is_completed = $course['has_certificate'] == 1;
                             ?>
-                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md">
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md <?php echo $is_completed ? 'border-green-200 bg-green-50' : ''; ?>">
                                 <div class="flex items-start justify-between mb-3">
                                     <div class="flex-1">
-                                        <h3 class="font-semibold text-gray-900 mb-1">
-                                            <?php echo htmlspecialchars($course['title']); ?>
-                                        </h3>
+                                        <div class="flex items-center mb-1">
+                                            <h3 class="font-semibold text-gray-900 mr-2">
+                                                <?php echo htmlspecialchars($course['title']); ?>
+                                            </h3>
+                                            <?php if ($is_completed): ?>
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                    Completed
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
                                         <p class="text-sm text-gray-600 mb-3">
                                             <?php echo htmlspecialchars(substr($course['description'], 0, 100)) . '...'; ?>
                                         </p>
@@ -226,10 +238,10 @@ include '../includes/student-header.php';
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600">Progress</span>
-                                        <span class="text-saffron-teal font-medium"><?php echo $progress_percentage; ?>%</span>
+                                        <span class="<?php echo $is_completed ? 'text-green-600' : 'text-saffron-teal'; ?> font-medium"><?php echo $progress_percentage; ?>%</span>
                                     </div>
                                     <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-saffron-teal h-2 rounded-full" 
+                                        <div class="<?php echo $is_completed ? 'bg-green-500' : 'bg-saffron-teal'; ?> h-2 rounded-full" 
                                              style="width: <?php echo $progress_percentage; ?>%"></div>
                                     </div>
                                     <div class="flex justify-between text-xs text-gray-500 mt-1">
@@ -241,10 +253,21 @@ include '../includes/student-header.php';
                                 </div>
                                 
                                 <div class="flex justify-end">
-                                    <a href="course-view.php?id=<?php echo $course['id']; ?>" 
-                                       class="bg-saffron-teal text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90">
-                                        Continue Learning
-                                    </a>
+                                    <?php if ($is_completed): ?>
+                                        <a href="certificate.php?course_id=<?php echo $course['id']; ?>" 
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 mr-2">
+                                            🏆 View Certificate
+                                        </a>
+                                        <a href="course-view.php?id=<?php echo $course['id']; ?>" 
+                                           class="bg-gray-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-600">
+                                            📚 Review Course
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="course-view.php?id=<?php echo $course['id']; ?>" 
+                                           class="bg-saffron-teal text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90">
+                                            Continue Learning
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>

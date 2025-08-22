@@ -11,6 +11,11 @@ if (isset($_SESSION['student_id'])) {
 $error_message = '';
 $success_message = '';
 
+// Check for logout message
+if (isset($_GET['logout']) && $_GET['logout'] === 'success') {
+    $success_message = 'You have been successfully logged out. Thank you for using Saffron Health!';
+}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');

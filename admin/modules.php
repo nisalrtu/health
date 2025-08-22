@@ -149,7 +149,7 @@ include '../includes/admin-header.php';
                 <p class="text-purple-100 text-lg">Organize course content into structured learning modules</p>
             </div>
             <div class="mt-4 md:mt-0">
-                <a href="module-add.php" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                <a href="module-add.php" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
                     + Add Module
                 </a>
             </div>
@@ -272,13 +272,13 @@ include '../includes/admin-header.php';
         <div class="md:w-auto flex space-x-2">
             <button 
                 type="submit" 
-                class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300"
+                class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
             >
                 Filter
             </button>
             <a 
                 href="modules.php" 
-                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-300"
+                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
             >
                 Clear
             </a>
@@ -303,7 +303,7 @@ include '../includes/admin-header.php';
             <?php endif; ?>
         </p>
         <?php if (empty($search_query)): ?>
-            <a href="module-add.php" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 inline-block">
+            <a href="module-add.php" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 inline-block">
                 Create First Module
             </a>
         <?php endif; ?>
@@ -403,7 +403,7 @@ include '../includes/admin-header.php';
                                 <input type="hidden" name="module_id" value="<?php echo $module['id']; ?>">
                                 <input type="hidden" name="new_status" value="<?php echo $module['is_active'] ? '0' : '1'; ?>">
                                 <button type="submit" 
-                                        class="<?php echo $module['is_active'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?> px-3 py-1 rounded-full text-sm font-medium hover:opacity-75 transition duration-300"
+                                        class="<?php echo $module['is_active'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?> px-3 py-1 rounded-full text-sm font-medium hover:opacity-75"
                                         onclick="return confirm('Are you sure you want to <?php echo $module['is_active'] ? 'deactivate' : 'activate'; ?> this module?')">
                                     <?php echo $module['is_active'] ? 'Active' : 'Inactive'; ?>
                                 </button>
@@ -414,7 +414,7 @@ include '../includes/admin-header.php';
                         <div class="col-span-1 text-center">
                             <div class="flex justify-center space-x-1">
                                 <a href="module-edit.php?id=<?php echo $module['id']; ?>" 
-                                   class="bg-blue-100 text-blue-600 p-2 rounded-lg hover:bg-blue-200 transition duration-300" 
+                                   class="bg-blue-100 text-blue-600 p-2 rounded-lg hover:bg-blue-200" 
                                    title="Edit Module">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -422,7 +422,7 @@ include '../includes/admin-header.php';
                                 </a>
                                 
                                 <a href="lessons.php?module_id=<?php echo $module['id']; ?>" 
-                                   class="bg-purple-100 text-purple-600 p-2 rounded-lg hover:bg-purple-200 transition duration-300" 
+                                   class="bg-purple-100 text-purple-600 p-2 rounded-lg hover:bg-purple-200" 
                                    title="Manage Lessons">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -430,7 +430,7 @@ include '../includes/admin-header.php';
                                 </a>
                                 
                                 <a href="quizzes.php?module_id=<?php echo $module['id']; ?>" 
-                                   class="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200 transition duration-300" 
+                                   class="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200" 
                                    title="Manage Quizzes">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -442,7 +442,7 @@ include '../includes/admin-header.php';
                                         <input type="hidden" name="action" value="delete_module">
                                         <input type="hidden" name="module_id" value="<?php echo $module['id']; ?>">
                                         <button type="submit" 
-                                                class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition duration-300" 
+                                                class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200" 
                                                 title="Delete Module"
                                                 onclick="return confirm('Are you sure you want to delete this module? This action cannot be undone.')">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -462,20 +462,6 @@ include '../includes/admin-header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-hide success/error messages
-    const alerts = document.querySelectorAll('.bg-green-100, .bg-red-100');
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            alert.style.transition = 'all 0.5s ease';
-            alert.style.opacity = '0';
-            alert.style.transform = 'translateY(-10px)';
-            
-            setTimeout(() => {
-                alert.remove();
-            }, 500);
-        }, 5000);
-    });
-
     // Search form enhancements
     const searchInput = document.querySelector('input[name="search"]');
     if (searchInput) {
@@ -492,19 +478,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add loading states to action buttons
-    const actionButtons = document.querySelectorAll('a[href*="module-edit"], a[href*="module-add"], a[href*="lessons"], a[href*="quizzes"]');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const icon = this.querySelector('svg');
-            if (icon) {
-                icon.style.animation = 'spin 1s linear infinite';
-            }
-            this.style.opacity = '0.7';
-            this.style.pointerEvents = 'none';
-        });
-    });
-
     // Enhance status toggle buttons
     const statusButtons = document.querySelectorAll('button[onclick*="confirm"]');
     statusButtons.forEach(button => {
@@ -520,29 +493,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Add hover effects for course headers
-    const courseHeaders = document.querySelectorAll('.bg-blue-50');
-    courseHeaders.forEach(header => {
-        header.addEventListener('mouseenter', function() {
-            this.classList.add('bg-blue-100');
-        });
-        
-        header.addEventListener('mouseleave', function() {
-            this.classList.remove('bg-blue-100');
-            this.classList.add('bg-blue-50');
-        });
-    });
 });
 
-// CSS for loading animation
+// CSS for styling
 const style = document.createElement('style');
 style.textContent = `
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;

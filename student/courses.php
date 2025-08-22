@@ -12,7 +12,7 @@ $student_id = $_SESSION['student_id'];
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 try {
-    // Build the main query for courses
+    // Main query for courses
     $where_clause = "WHERE c.is_active = 1";
     $params = [];
     
@@ -29,6 +29,12 @@ try {
                COUNT(DISTINCT CASE WHEN up.status = 'completed' AND up.module_id IS NOT NULL THEN up.module_id END) as completed_modules,
                CASE WHEN EXISTS(SELECT 1 FROM user_progress up2 WHERE up2.course_id = c.id AND up2.user_id = ?) THEN 1 ELSE 0 END as is_enrolled,
                CASE WHEN EXISTS(SELECT 1 FROM certificates cert WHERE cert.course_id = c.id AND cert.user_id = ?) THEN 1 ELSE 0 END as is_completed,
+               CASE WHEN EXISTS(
+                   SELECT 1 FROM quiz_attempts qa
+                   JOIN quizzes q ON qa.quiz_id = q.id
+                   JOIN modules m ON q.module_id = m.id
+                   WHERE m.course_id = c.id AND qa.user_id = ? AND q.quiz_type = 'final' AND qa.passed = 1
+               ) THEN 1 ELSE 0 END as final_quiz_passed,
                MAX(up.completed_at) as last_activity
         FROM courses c
         LEFT JOIN modules m ON c.id = m.course_id AND m.is_active = 1
@@ -38,7 +44,47 @@ try {
         ORDER BY is_enrolled DESC, c.created_at DESC
     ");
     
-    $execute_params = [$student_id, $student_id, $student_id];
+    $execute_params = [$student_id, $student_id, $student_id, $student_id];
+    if (!empty($params)) {
+        $execute_params = array_merge($execute_params, $params);
+    }
+    
+    $stmt->execute($execute_params);
+    $courses = $stmt->fetchAll();
+    
+    // Auto-generate certificates for completed courses
+    foreach ($courses as &$course) {
+        $progress_percentage = $course['total_modules'] > 0 ? 
+            round(($course['completed_modules'] / $course['total_modules']) * 100) : 0;
+        
+        // Check if course should be completed but doesn't have a certificate yet
+        if ($progress_percentage == 100 && 
+            $course['final_quiz_passed'] && 
+            !$course['is_completed'] && 
+            $course['is_enrolled']) {
+            
+            try {
+                // Generate unique certificate code
+                $certificate_code = 'LM-' . strtoupper(uniqid()) . '-' . $course['id'];
+                
+                // Insert certificate
+                $cert_stmt = $pdo->prepare("
+                    INSERT INTO certificates (user_id, course_id, certificate_code, issued_at) 
+                    VALUES (?, ?, ?, NOW())
+                ");
+                $cert_stmt->execute([$student_id, $course['id'], $certificate_code]);
+                
+                // Update the course completion status in our array
+                $course['is_completed'] = 1;
+                
+            } catch(PDOException $e) {
+                // Silently handle duplicate certificate generation
+                error_log("Certificate generation error: " . $e->getMessage());
+            }
+        }
+    }
+    
+    $execute_params = [$student_id, $student_id, $student_id, $student_id];
     if (!empty($params)) {
         $execute_params = array_merge($execute_params, $params);
     }
@@ -216,20 +262,40 @@ include '../includes/student-header.php';
             <?php 
             $progress_percentage = $course['total_modules'] > 0 ? 
                 round(($course['completed_modules'] / $course['total_modules']) * 100) : 0;
+            
+            // Determine course completion status
+            $is_course_complete = ($progress_percentage == 100 && $course['final_quiz_passed'] && $course['is_completed']);
+            $is_ready_for_final = ($progress_percentage == 100 && !$course['final_quiz_passed']);
+            $is_in_progress = ($course['is_enrolled'] && $progress_percentage > 0 && $progress_percentage < 100);
             ?>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition duration-300 course-card">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition duration-300 course-card <?php echo $is_course_complete ? 'completed-course' : ''; ?>">
                 <!-- Course Status Badge -->
                 <div class="relative">
-                    <div class="h-2" style="background-color: #5fb3b4;"></div>
-                    <?php if ($course['is_completed']): ?>
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    <?php if ($is_course_complete): ?>
+                        <div class="h-2 bg-gradient-to-r from-green-400 to-green-600"></div>
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center shadow-lg">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
                             ✓ Completed
                         </div>
-                    <?php elseif ($course['is_enrolled']): ?>
+                    <?php elseif ($is_ready_for_final): ?>
+                        <div class="h-2 bg-gradient-to-r from-orange-400 to-orange-600"></div>
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse">
+                            🎯 Final Quiz Ready
+                        </div>
+                    <?php elseif ($is_in_progress): ?>
+                        <div class="h-2 bg-gradient-to-r from-blue-400 to-blue-600"></div>
                         <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            In Progress
+                            📚 In Progress
+                        </div>
+                    <?php elseif ($course['is_enrolled']): ?>
+                        <div class="h-2" style="background-color: #5fb3b4;"></div>
+                        <div class="absolute top-4 right-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                            ⭐ Started
                         </div>
                     <?php else: ?>
+                        <div class="h-2" style="background-color: #5fb3b4;"></div>
                         <div class="absolute top-4 right-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-medium">
                             Not Started
                         </div>
@@ -280,17 +346,25 @@ include '../includes/student-header.php';
                         <div class="text-xs text-gray-500">
                             Added <?php echo date('M j, Y', strtotime($course['created_at'])); ?>
                         </div>
-                        <a href="course-view.php?id=<?php echo $course['id']; ?>" 
-                           class="text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition duration-300 action-btn"
-                           style="background-color: #5fb3b4;">
-                            <?php if ($course['is_completed']): ?>
-                                Review Course
-                            <?php elseif ($course['is_enrolled']): ?>
-                                Continue Learning
-                            <?php else: ?>
-                                Start Course
-                            <?php endif; ?>
-                        </a>
+                        <?php if ($is_course_complete): ?>
+                            <a href="certificate.php?course_id=<?php echo $course['id']; ?>" 
+                               class="text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition duration-300 action-btn completed-btn"
+                               style="background-color: #059669;">
+                                🏆 View Certificate
+                            </a>
+                        <?php else: ?>
+                            <a href="course-view.php?id=<?php echo $course['id']; ?>" 
+                               class="text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition duration-300 action-btn"
+                               style="background-color: #5fb3b4;">
+                                <?php if ($is_ready_for_final): ?>
+                                    🎯 Take Final Quiz
+                                <?php elseif ($course['is_enrolled']): ?>
+                                    📖 Continue Learning
+                                <?php else: ?>
+                                    🚀 Start Course
+                                <?php endif; ?>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -463,6 +537,33 @@ document.addEventListener('DOMContentLoaded', function() {
         
         .course-card {
             transition: all 0.3s ease;
+        }
+        
+        .completed-course {
+            border: 2px solid #10b981;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1), 0 2px 4px -1px rgba(16, 185, 129, 0.06);
+        }
+        
+        .completed-course:hover {
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -2px rgba(16, 185, 129, 0.05);
+            transform: translateY(-4px);
+        }
+        
+        .completed-btn {
+            background: linear-gradient(135deg, #059669, #10b981) !important;
+        }
+        
+        .completed-btn:hover {
+            background: linear-gradient(135deg, #047857, #059669) !important;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
         }
     `;
     document.head.appendChild(style);

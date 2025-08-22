@@ -113,13 +113,6 @@ try {
     // Check if quizzes are unlocked (all lessons must be completed first)
     $quizzes_unlocked = ($completed_lessons == $total_lessons);
     
-    // Auto-enroll student in course if not already enrolled
-    $stmt = $pdo->prepare("
-        INSERT IGNORE INTO user_progress (user_id, course_id, status) 
-        VALUES (?, ?, 'in_progress')
-    ");
-    $stmt->execute([$student_id, $course_id]);
-    
 } catch(PDOException $e) {
     header('Location: course-view.php?id=' . $course_id);
     exit();
